@@ -50,7 +50,7 @@ func main() {
 		fmt.Println("Start sending to Slack")
 	}
 
-	if settings.Slack.Token != "" {
+	if settings.Discord.Token != "" {
 		senders = append(senders, discord.New(settings.Discord).SendMessageFunction())
 		fmt.Println("Start sending to Discord")
 	}
