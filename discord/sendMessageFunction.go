@@ -18,6 +18,8 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 		case ark.MessageTypeJoin:
 			onlineNumber += 1
 
+			h.joinState.Join(al.UserName)
+
 			// if h.settings.SendOptions.JoinAndLeftState {
 			// 		TODO: Make State Image
 			// }
@@ -48,6 +50,8 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 			return nil
 		case ark.MessageTypeLeave:
 			onlineNumber -= 1
+
+			h.joinState.Leave(al.UserName)
 
 			// if h.settings.SendOptions.JoinAndLeftState {
 			// 		TODO: Make State Image
