@@ -20,8 +20,8 @@ var regexps = struct {
 	Other    *regexp.Regexp
 }{
 	// [2022.06.19-07.33.44:247][542]2022.06.19_07.33.44: tkmax777 joined this ARK!
-	JoinLeft: regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+:\d+)\]\[\d+\]\d+\.\d+\.\d+_\d+\.\d+\.\d+:\s(\S+)\s(joined|left)\sthis\sARK`),
-	Other:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+:\d+)\]\[\d+\](.*)`),
+	JoinLeft: regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\]\d+\.\d+\.\d+_\d+\.\d+\.\d+:\s(\S+)\s(joined|left)\sthis\sARK`),
+	Other:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\](.*)`),
 }
 
 func NewMessageFromLine(line string) (*Message, error) {
@@ -32,7 +32,7 @@ func NewMessageFromLine(line string) (*Message, error) {
 	var parseContent = func(line string) (string, *time.Time, error) {
 		var contents = regexps.Other.FindAllStringSubmatch(line, 1)[0]
 
-		t, err := time.Parse("2006.01.02-15.04.05:000", contents[1])
+		t, err := time.Parse("2006.01.02-15.04.05", contents[1])
 		if err != nil {
 			return "", nil, errors.Wrapf(err, "TimeParseError(%s)", contents[1])
 		}
@@ -44,28 +44,29 @@ func NewMessageFromLine(line string) (*Message, error) {
 	case regexps.JoinLeft.MatchString(line):
 		var contents = regexps.JoinLeft.FindAllStringSubmatch(line, 1)[0]
 
+		c, t, err := parseContent(line)
+		if err != nil {
+			return &message, err
+		}
+
+		message.Time = *t
+
 		switch contents[3] {
 		case "joined":
 			var join = MessageTypeJoin{
 				UserName: contents[1],
+				Content:  c,
 			}
 
 			message.Content = join
 		case "left":
 			var left = MessageTypeLeave{
 				UserName: contents[1],
+				Content:  c,
 			}
 
 			message.Content = left
 		}
-
-		c, t, err := parseContent(line)
-		if err != nil {
-			return &message, err
-		}
-
-		message.Content = c
-		message.Time = *t
 
 		return &message, nil
 
@@ -75,7 +76,9 @@ func NewMessageFromLine(line string) (*Message, error) {
 			return &message, err
 		}
 
-		message.Content = c
+		message.Content = MessageTypeOther{
+			Content: c,
+		}
 		message.Time = *t
 
 		return &message, nil
