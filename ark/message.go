@@ -54,14 +54,14 @@ func NewMessageFromLine(line string) (*Message, error) {
 		switch contents[3] {
 		case "joined":
 			var join = MessageTypeJoin{
-				UserName: contents[1],
+				UserName: contents[2],
 				Content:  c,
 			}
 
 			message.Content = join
 		case "left":
 			var left = MessageTypeLeave{
-				UserName: contents[1],
+				UserName: contents[2],
 				Content:  c,
 			}
 
