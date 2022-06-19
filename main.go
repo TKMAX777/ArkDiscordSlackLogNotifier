@@ -50,8 +50,10 @@ func main() {
 		fmt.Println("Start sending to Slack")
 	}
 
-	if settings.Discord.Token != "" {
-		senders = append(senders, discord.New(settings.Discord).SendMessageFunction())
+	if settings.Discord.Token != "" || settings.Discord.HookURI != "" {
+		var handler = discord.New(settings.Discord)
+		handler.SetHookURI(settings.Discord.HookURI)
+		senders = append(senders, handler.SendMessageFunction())
 		fmt.Println("Start sending to Discord")
 	}
 

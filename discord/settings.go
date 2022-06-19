@@ -2,6 +2,7 @@ package discord
 
 type Settings struct {
 	Token       string
+	HookURI     string
 	SendOptions SendOptions
 
 	ChannelID string

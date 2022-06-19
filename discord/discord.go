@@ -22,3 +22,7 @@ func New(s Settings) *Handler {
 		joinState: joinstate.NewJoinState(),
 	}
 }
+
+func (h *Handler) SetHookURI(uri string) {
+	h.hook.SetHookURI(uri)
+}
