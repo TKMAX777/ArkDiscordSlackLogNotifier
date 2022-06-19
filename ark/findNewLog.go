@@ -21,7 +21,7 @@ func (h Handler) findNewLog() (string, error) {
 			continue
 		}
 
-		logNo, err := strconv.Atoi(strings.Split(strings.TrimSuffix(f.Name(), "ServerGame."), ".")[0])
+		logNo, err := strconv.Atoi(strings.Split(strings.TrimPrefix(f.Name(), "ServerGame."), ".")[0])
 		if err != nil {
 			continue
 		}
