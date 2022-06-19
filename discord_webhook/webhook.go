@@ -231,7 +231,7 @@ func (h *Handler) createChannelWebhook(method, channelID, name string) (*discord
 
 func (h *Handler) send(method, channelID, messageID string, message Message, wait bool, files []File) (newMessage *Message, err error) {
 	var hook *discordgo.Webhook
-	if h.optionHook.ID == "" {
+	if h.optionHook == nil || h.optionHook.ID == "" {
 		hook = h.GetChannelWebhook(channelID)
 	} else {
 		hook = h.optionHook
