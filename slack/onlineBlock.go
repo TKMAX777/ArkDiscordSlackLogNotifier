@@ -74,7 +74,7 @@ func (h *Handler) sendOnlineBlock() error {
 func (h *Handler) buildOnlineBlock() []slack_webhook.BlockBase {
 	var blocks = []slack_webhook.BlockBase{}
 
-	var channelText = "Logon Users"
+	var channelText = "Online"
 	var channelNameElement = slack_webhook.MrkdwnElement(channelText)
 
 	blocks = append(
