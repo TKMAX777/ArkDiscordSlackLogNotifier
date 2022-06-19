@@ -36,7 +36,7 @@ func main() {
 				Other:            os.Getenv("DISCORD_SEND_OTHER") == "yes",
 				All:              os.Getenv("DISCORD_SEND_ALL") == "yes",
 			},
-
+			HookURI:   os.Getenv("DISCORD_HOOK_URI"),
 			ChannelID: os.Getenv("DISCORD_CHANNEL_ID"),
 			AvaterURI: os.Getenv("DISCORD_AVATER_URI"),
 			UserName:  os.Getenv("DISCORD_USERNAME"),
