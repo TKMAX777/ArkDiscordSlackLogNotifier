@@ -146,7 +146,7 @@ func (h *Handler) createWebhook(channelID string) *discordgo.Webhook {
 		return nil
 	}
 	if len(webhooks) == 0 {
-		webhook, err := h.createChannelWebhook(channelID, "Slack Synchronizer", "a")
+		webhook, err := h.createChannelWebhook(channelID, "Ark Survival", "a")
 		if err != nil {
 			fmt.Printf("Error creating webhook: %v\n", err)
 			return nil
