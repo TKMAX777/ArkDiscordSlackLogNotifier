@@ -86,7 +86,7 @@ func (h *Handler) buildOnlineBlock() []slack_webhook.BlockBase {
 	var elements = []slack_webhook.BlockElement{}
 
 	for username := range h.joinState.State {
-		var userElm = slack_webhook.MrkdwnElement(h.settings.UserListIconEmoji + " " + username)
+		var userElm = slack_webhook.MrkdwnElement(h.settings.SendOptions.JoinAndLeftState.Emoji + " " + username)
 
 		elements = append(elements, userElm)
 

@@ -16,25 +16,45 @@ func main() {
 		Slack: slack.Settings{
 			Token: os.Getenv("SLACK_TOKEN"),
 			SendOptions: slack.SendOptions{
-				JoinAndLeftState: os.Getenv("SLACK_SEND_JOIN_AND_LEFT_STATE") == "yes",
-				JoinAndLeft:      os.Getenv("SLACK_SEND_JOIN_AND_LEFT") == "yes",
-				Other:            os.Getenv("SLACK_SEND_OTHER") == "yes",
-				All:              os.Getenv("SLACK_SEND_ALL") == "yes",
+				JoinAndLeftState: slack.SendOption{
+					IsEnabled: os.Getenv("SLACK_SEND_JOIN_AND_LEFT_STATE") == "yes",
+					Emoji:     os.Getenv("SLACK_JOIN_AND_LEFT_STATE_EMOJI"),
+				},
+				JoinAndLeft: slack.SendOption{
+					IsEnabled: os.Getenv("SLACK_SEND_JOIN_AND_LEFT") == "yes",
+					Emoji:     os.Getenv("SLACK_JOIN_AND_LEFT_EMOJI"),
+				},
+				Other: slack.SendOption{
+					IsEnabled: os.Getenv("SLACK_SEND_OTHER") == "yes",
+					Emoji:     os.Getenv("SLACK_OTHER_EMOJI"),
+				},
+				All: slack.SendOption{
+					IsEnabled: os.Getenv("SLACK_SEND_ALL") == "yes",
+				},
 			},
 
 			ChannelID: os.Getenv("SLACK_CHANNEL_ID"),
 			AvaterURI: os.Getenv("SLACK_AVATER_URI"),
 			UserName:  os.Getenv("SLACK_USERNAME"),
-
-			UserListIconEmoji: os.Getenv("SLACK_USER_EMOJI"),
 		},
 		Discord: discord.Settings{
 			Token: os.Getenv("DISCORD_TOKEN"),
 			SendOptions: discord.SendOptions{
-				JoinAndLeftState: os.Getenv("DISCORD_SEND_JOIN_AND_LEFT_STATE") == "yes",
-				JoinAndLeft:      os.Getenv("DISCORD_SEND_JOIN_AND_LEFT") == "yes",
-				Other:            os.Getenv("DISCORD_SEND_OTHER") == "yes",
-				All:              os.Getenv("DISCORD_SEND_ALL") == "yes",
+				JoinAndLeftState: discord.SendOption{
+					IsEnabled: os.Getenv("DISCORD_SEND_JOIN_AND_LEFT_STATE") == "yes",
+					Emoji:     os.Getenv("DISCORD_JOIN_AND_LEFT_STATE_EMOJI"),
+				},
+				JoinAndLeft: discord.SendOption{
+					IsEnabled: os.Getenv("DISCORD_SEND_JOIN_AND_LEFT") == "yes",
+					Emoji:     os.Getenv("DISCORD_JOIN_AND_LEFT_EMOJI"),
+				},
+				Other: discord.SendOption{
+					IsEnabled: os.Getenv("DISCORD_SEND_OTHER") == "yes",
+					Emoji:     os.Getenv("DISCORD_OTHER_EMOJI"),
+				},
+				All: discord.SendOption{
+					IsEnabled: os.Getenv("DISCORD_SEND_ALL") == "yes",
+				},
 			},
 			HookURI:   os.Getenv("DISCORD_HOOK_URI"),
 			ChannelID: os.Getenv("DISCORD_CHANNEL_ID"),

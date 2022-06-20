@@ -2,6 +2,7 @@ package discord
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/TKMAX777/ArkDiscordSlackLogNotifier/ark"
 	"github.com/TKMAX777/ArkDiscordSlackLogNotifier/discord_webhook"
@@ -24,7 +25,7 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 			// 		TODO: Make State Image
 			// }
 
-			if h.settings.SendOptions.All || h.settings.SendOptions.JoinAndLeft {
+			if h.settings.SendOptions.All.IsEnabled || h.settings.SendOptions.JoinAndLeft.IsEnabled {
 				var text string
 				switch {
 				case onlineNumber > 1:
@@ -57,19 +58,19 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 			// 		TODO: Make State Image
 			// }
 
-			if h.settings.SendOptions.All || h.settings.SendOptions.JoinAndLeft {
+			if h.settings.SendOptions.All.IsEnabled || h.settings.SendOptions.JoinAndLeft.IsEnabled {
 				var text string
 				switch {
 				case onlineNumber > 1:
-					text = fmt.Sprintf("%s\nOnline: %d players", al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, onlineNumber)
 				case onlineNumber == 1:
-					text = fmt.Sprintf("%s\nOnline: %d player", al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, onlineNumber)
 				case onlineNumber <= 0:
-					text = fmt.Sprintf("%s\nOnline: no players", al.Content)
+					text = fmt.Sprintf("%s %s\nOnline: no players", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content)
 				}
 
 				var message = discord_webhook.Message{
-					Content:   text,
+					Content:   strings.TrimSpace(text),
 					ChannelID: h.settings.ChannelID,
 					UserName:  h.settings.UserName,
 					AvaterURL: h.settings.AvaterURI,
@@ -82,9 +83,9 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 
 			return nil
 		case ark.MessageTypeOther:
-			if !h.settings.SendOptions.Other {
+			if !h.settings.SendOptions.Other.IsEnabled {
 				var message = discord_webhook.Message{
-					Content:   al.Content,
+					Content:   strings.TrimSpace(fmt.Sprintf("%s %s", h.settings.SendOptions.Other.Emoji, al.Content)),
 					ChannelID: h.settings.ChannelID,
 					UserName:  h.settings.UserName,
 					AvaterURL: h.settings.AvaterURI,
@@ -95,7 +96,7 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 				return errors.Wrap(err, "Send")
 			}
 		case ark.MessageTypeIlligalFormat:
-			if !h.settings.SendOptions.All {
+			if !h.settings.SendOptions.All.IsEnabled {
 				return nil
 			}
 

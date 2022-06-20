@@ -20,14 +20,14 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 
 			h.joinState.Join(al.UserName)
 
-			if h.settings.SendOptions.JoinAndLeftState {
+			if h.settings.SendOptions.JoinAndLeftState.IsEnabled {
 				err := h.sendOnlineBlock()
 				if err != nil {
 					return errors.Wrap(err, "sendOnlineBlock")
 				}
 			}
 
-			if h.settings.SendOptions.All || h.settings.SendOptions.JoinAndLeft {
+			if h.settings.SendOptions.All.IsEnabled || h.settings.SendOptions.JoinAndLeft.IsEnabled {
 				var text string
 				switch {
 				case onlineNumber > 1:
@@ -57,14 +57,14 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 
 			h.joinState.Leave(al.UserName)
 
-			if h.settings.SendOptions.JoinAndLeftState {
+			if h.settings.SendOptions.JoinAndLeftState.IsEnabled {
 				err := h.sendOnlineBlock()
 				if err != nil {
 					return errors.Wrap(err, "sendOnlineBlock")
 				}
 			}
 
-			if h.settings.SendOptions.All || h.settings.SendOptions.JoinAndLeft {
+			if h.settings.SendOptions.All.IsEnabled || h.settings.SendOptions.JoinAndLeft.IsEnabled {
 				var text string
 				switch {
 				case onlineNumber > 1:
@@ -90,7 +90,7 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 
 			return nil
 		case ark.MessageTypeOther:
-			if !h.settings.SendOptions.Other {
+			if !h.settings.SendOptions.Other.IsEnabled {
 				var message = slack_webhook.Message{
 					Text:     al.Content,
 					Channel:  h.settings.ChannelID,
@@ -104,7 +104,7 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 				return errors.Wrap(err, "Send")
 			}
 		case ark.MessageTypeIlligalFormat:
-			if !h.settings.SendOptions.All {
+			if !h.settings.SendOptions.All.IsEnabled {
 				return nil
 			}
 

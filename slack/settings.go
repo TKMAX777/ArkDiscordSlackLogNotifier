@@ -7,13 +7,16 @@ type Settings struct {
 	ChannelID string
 	AvaterURI string
 	UserName  string
-
-	UserListIconEmoji string
 }
 
 type SendOptions struct {
-	JoinAndLeftState bool
-	JoinAndLeft      bool
-	Other            bool
-	All              bool
+	JoinAndLeftState SendOption
+	JoinAndLeft      SendOption
+	Other            SendOption
+	All              SendOption
+}
+
+type SendOption struct {
+	IsEnabled bool
+	Emoji     string
 }
