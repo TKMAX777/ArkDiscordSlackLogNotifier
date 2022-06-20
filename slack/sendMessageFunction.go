@@ -93,7 +93,7 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 		case ark.MessageTypeOther:
 			if h.settings.SendOptions.Other.IsEnabled {
 				var message = slack_webhook.Message{
-					Text:     al.Content,
+					Text:     strings.TrimSpace(fmt.Sprintf("%s %s", h.settings.SendOptions.Other.Emoji, al.Content)),
 					Channel:  h.settings.ChannelID,
 					Username: h.settings.UserName,
 					IconURL:  h.settings.AvaterURI,
