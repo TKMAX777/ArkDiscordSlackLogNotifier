@@ -83,7 +83,7 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 
 			return nil
 		case ark.MessageTypeOther:
-			if !h.settings.SendOptions.Other.IsEnabled {
+			if h.settings.SendOptions.Other.IsEnabled {
 				var message = discord_webhook.Message{
 					Content:   strings.TrimSpace(fmt.Sprintf("%s %s", h.settings.SendOptions.Other.Emoji, al.Content)),
 					ChannelID: h.settings.ChannelID,
@@ -96,7 +96,7 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 				return errors.Wrap(err, "Send")
 			}
 		case ark.MessageTypeIlligalFormat:
-			if !h.settings.SendOptions.All.IsEnabled {
+			if h.settings.SendOptions.All.IsEnabled {
 				return nil
 			}
 
