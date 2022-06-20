@@ -1,0 +1,11 @@
+*.json
+
+*.exe
+.vscode
+
+dist/
+*.jpeg
+*.gif
+*.sh
+*.ps1
+debug
