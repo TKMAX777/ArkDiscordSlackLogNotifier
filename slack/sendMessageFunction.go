@@ -2,6 +2,7 @@ package slack
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/TKMAX777/ArkDiscordSlackLogNotifier/ark"
 	"github.com/TKMAX777/ArkDiscordSlackLogNotifier/message_sender"
@@ -31,15 +32,15 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 				var text string
 				switch {
 				case onlineNumber > 1:
-					text = fmt.Sprintf("%s\nOnline: %d players", al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeftState.Emoji, al.Content, onlineNumber)
 				case onlineNumber == 1:
-					text = fmt.Sprintf("%s\nOnline: %d player", al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeftState.Emoji, al.Content, onlineNumber)
 				case onlineNumber <= 0:
-					text = fmt.Sprintf("%s\nOnline: no players", al.Content)
+					text = fmt.Sprintf("%s %s\nOnline: no players", h.settings.SendOptions.JoinAndLeftState.Emoji, al.Content)
 				}
 
 				var message = slack_webhook.Message{
-					Text:     text,
+					Text:     strings.TrimSpace(text),
 					Channel:  h.settings.ChannelID,
 					Username: h.settings.UserName,
 					IconURL:  h.settings.AvaterURI,
@@ -68,15 +69,15 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 				var text string
 				switch {
 				case onlineNumber > 1:
-					text = fmt.Sprintf("%s\nOnline: %d players", al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeftState.EmojiSub, al.Content, onlineNumber)
 				case onlineNumber == 1:
-					text = fmt.Sprintf("%s\nOnline: %d player", al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeftState.EmojiSub, al.Content, onlineNumber)
 				case onlineNumber <= 0:
-					text = fmt.Sprintf("%s\nOnline: no players", al.Content)
+					text = fmt.Sprintf("%s %s\nOnline: no players", h.settings.SendOptions.JoinAndLeftState.EmojiSub, al.Content)
 				}
 
 				var message = slack_webhook.Message{
-					Text:     text,
+					Text:     strings.TrimSpace(text),
 					Channel:  h.settings.ChannelID,
 					Username: h.settings.UserName,
 					IconURL:  h.settings.AvaterURI,

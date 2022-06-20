@@ -19,4 +19,5 @@ type SendOptions struct {
 type SendOption struct {
 	IsEnabled bool
 	Emoji     string
+	EmojiSub  string
 }

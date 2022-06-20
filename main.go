@@ -22,7 +22,8 @@ func main() {
 				},
 				JoinAndLeft: slack.SendOption{
 					IsEnabled: os.Getenv("SLACK_SEND_JOIN_AND_LEFT") == "yes",
-					Emoji:     os.Getenv("SLACK_JOIN_AND_LEFT_EMOJI"),
+					Emoji:     os.Getenv("SLACK_JOIN_EMOJI"),
+					EmojiSub:  os.Getenv("SLACK_LEFT_EMOJI"),
 				},
 				Other: slack.SendOption{
 					IsEnabled: os.Getenv("SLACK_SEND_OTHER") == "yes",
@@ -46,7 +47,8 @@ func main() {
 				},
 				JoinAndLeft: discord.SendOption{
 					IsEnabled: os.Getenv("DISCORD_SEND_JOIN_AND_LEFT") == "yes",
-					Emoji:     os.Getenv("DISCORD_JOIN_AND_LEFT_EMOJI"),
+					Emoji:     os.Getenv("DISCORD_JOIN_EMOJI"),
+					EmojiSub:  os.Getenv("DISCORD_LEFT_EMOJI"),
 				},
 				Other: discord.SendOption{
 					IsEnabled: os.Getenv("DISCORD_SEND_OTHER") == "yes",

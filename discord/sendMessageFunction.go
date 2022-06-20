@@ -29,15 +29,15 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 				var text string
 				switch {
 				case onlineNumber > 1:
-					text = fmt.Sprintf("%s\nOnline: %d players", al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, onlineNumber)
 				case onlineNumber == 1:
-					text = fmt.Sprintf("%s\nOnline: %d player", al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, onlineNumber)
 				case onlineNumber <= 0:
-					text = fmt.Sprintf("%s\nOnline: no players", al.Content)
+					text = fmt.Sprintf("%s %s\nOnline: no players", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content)
 				}
 
 				var message = discord_webhook.Message{
-					Content:   text,
+					Content:   strings.TrimSpace(text),
 					ChannelID: h.settings.ChannelID,
 					UserName:  h.settings.UserName,
 					AvaterURL: h.settings.AvaterURI,
@@ -62,11 +62,11 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 				var text string
 				switch {
 				case onlineNumber > 1:
-					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeft.EmojiSub, al.Content, onlineNumber)
 				case onlineNumber == 1:
-					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, onlineNumber)
+					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeft.EmojiSub, al.Content, onlineNumber)
 				case onlineNumber <= 0:
-					text = fmt.Sprintf("%s %s\nOnline: no players", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content)
+					text = fmt.Sprintf("%s %s\nOnline: no players", h.settings.SendOptions.JoinAndLeft.EmojiSub, al.Content)
 				}
 
 				var message = discord_webhook.Message{
