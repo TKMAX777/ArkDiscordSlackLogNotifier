@@ -21,7 +21,7 @@ var regexps = struct {
 }{
 	// [2022.06.19-07.33.44:247][542]2022.06.19_07.33.44: tkmax777 joined this ARK!
 	JoinLeft: regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\]\d+\.\d+\.\d+_\d+\.\d+\.\d+:\s(\S+)\s(joined|left)\sthis\sARK`),
-	Other:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\](.*)`),
+	Other:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\](.*:\s*)?(.*)`),
 }
 
 func NewMessageFromLine(line string) (*Message, error) {
@@ -37,7 +37,7 @@ func NewMessageFromLine(line string) (*Message, error) {
 			return "", nil, errors.Wrapf(err, "TimeParseError(%s)", contents[1])
 		}
 
-		return contents[2], &t, nil
+		return contents[3], &t, nil
 	}
 
 	switch {
