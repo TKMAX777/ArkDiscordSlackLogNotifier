@@ -19,6 +19,10 @@ This program monitors the Ark server logs and notifies Discord or Slack when pla
 
 ## Install
 
+```
+wget https://github.com/TKMAX777/ArkDiscordSlackLogNotifier/releases/latest/download/ArkDiscordSlackLogNotifier_Linux_x86_64.tar.gz
+tar -xzvf ArkDiscordSlackLogNotifier_Linux_x86_64.tar.gz
+```
 
 ## Setup
 
@@ -38,9 +42,9 @@ SLACK_SEND_JOIN_AND_LEFT=yes/no
 SLACK_SEND_OTHER=yes/no
 SLACK_SEND_ALL=yes/no
 
-SLACK_JOIN_AND_LEFT_STATE_EMOJI=
-SLACK_JOIN_EMOJI=
-SLACK_LEFT_EMOJI=
+SLACK_JOIN_AND_LEFT_STATE_EMOJI=:tools: 
+SLACK_JOIN_EMOJI=:revolving_heart:
+SLACK_LEFT_EMOJI=:wave: 
 SLACK_OTHER_EMOJI=
 
 DISCORD_HOOK_URI=
@@ -52,8 +56,8 @@ DISCORD_SEND_JOIN_AND_LEFT=yes/no
 DISCORD_SEND_OTHER=yes/no
 DISCORD_SEND_ALL=yes/no
 
-DISCORD_JOIN_AND_LEFT_STATE_EMOJI=
-DISCORD_JOIN_EMOJI=
-DISCORD_LEFT_EMOJI=
+DISCORD_JOIN_AND_LEFT_STATE_EMOJI=:tools: 
+DISCORD_JOIN_EMOJI=:revolving_heart:
+DISCORD_LEFT_EMOJI=:wave: 
 DISCORD_OTHER_EMOJI=
 ```
