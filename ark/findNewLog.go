@@ -2,8 +2,8 @@ package ark
 
 import (
 	"io/ioutil"
-	"strconv"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 )
@@ -15,19 +15,24 @@ func (h Handler) findNewLog() (string, error) {
 	}
 
 	var newestLog string
-	var nLogNo int
+	var nLogNo int64
 	for _, f := range fs {
 		if !strings.HasPrefix(f.Name(), "ServerGame.") {
 			continue
 		}
 
-		logNo, err := strconv.Atoi(strings.Split(strings.TrimPrefix(f.Name(), "ServerGame."), ".")[0])
+		var fsep = strings.Split(f.Name(), ".")
+		if len(fsep) < 2 {
+			continue
+		}
+
+		t, err := time.Parse("2006.01.02_03.04.05.log", strings.Join(fsep[2:], ","))
 		if err != nil {
 			continue
 		}
 
-		if logNo > nLogNo {
-			nLogNo = logNo
+		if nLogNo < t.UnixMilli() {
+			nLogNo = t.UnixMilli()
 			newestLog = f.Name()
 		}
 	}
