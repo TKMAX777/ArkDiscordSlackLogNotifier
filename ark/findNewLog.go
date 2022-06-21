@@ -26,7 +26,7 @@ func (h Handler) findNewLog() (string, error) {
 			continue
 		}
 
-		t, err := time.Parse("2006.01.02_03.04.05.log", strings.Join(fsep[2:], "."))
+		t, err := time.Parse("2006.01.02_15.04.05.log", strings.Join(fsep[2:], "."))
 		if err != nil {
 			continue
 		}
