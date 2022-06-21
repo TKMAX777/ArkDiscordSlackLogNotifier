@@ -1,17 +1,27 @@
 package ark
 
+import "time"
+
+type Message struct {
+	RawLine string
+	Content string
+	Time    time.Time
+	Event   interface{}
+}
+
 type MessageTypeJoin struct {
-	Content  string
-	UserName string
+	User User
 }
 
 type MessageTypeLeave struct {
-	Content  string
-	UserName string
+	User User
+}
+
+type MessageTypeKilled struct {
+	KilledUser User
+	KilledBy   Enemy
 }
 
 type MessageTypeIlligalFormat struct{}
 
-type MessageTypeOther struct {
-	Content string
-}
+type MessageTypeOther struct{}
