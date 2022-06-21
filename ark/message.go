@@ -12,14 +12,14 @@ var illigalFormatError = errors.New("IlligalFormat")
 
 var regexps = struct {
 	JoinLeft *regexp.Regexp
+	Tamed    *regexp.Regexp
 	Killed   *regexp.Regexp
 	Other    *regexp.Regexp
 }{
-	// [2022.06.19-07.33.44:247][542]2022.06.19_07.33.44: tkmax777 joined this ARK!
 	JoinLeft: regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\]\d+\.\d+\.\d+_\d+\.\d+\.\d+:\s(\S+)\s(joined|left)\sthis\sARK`),
-	// tkmax777 - Lvl 5 () was killed by a Dilophosaur - Lvl 4 ()!
-	Killed: regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\].*: (\S+) - Lvl (\d+) \((.*)\) was killed by (a|an) (.+) - Lvl (\d+) \((.*)\)`),
-	Other:  regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\](.*:\s*)?(.*)`),
+	Tamed:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\].*: (\S+) of Tribe (.*) Tamed (a|an) (.+) - Lvl (\d+) \((.+)\)!`),
+	Killed:   regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\].*: (\S+) - Lvl (\d+) \((.*)\) was killed by (a|an) (.+) - Lvl (\d+) \((.*)\)`),
+	Other:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\](.*:\s*)?(.*)`),
 }
 
 func NewMessageFromLine(line string) (*Message, error) {
@@ -65,6 +65,26 @@ func NewMessageFromLine(line string) (*Message, error) {
 		}
 
 		return message, nil
+	case regexps.Tamed.MatchString(line):
+		var contents = regexps.Tamed.FindAllStringSubmatch(line, 1)[0]
+		message, err := parseContent(line)
+		if err != nil {
+			return message, err
+		}
+
+		krl, _ := strconv.Atoi(contents[5])
+
+		message.Event = MessageTypeKilled{
+			KilledUser: User{
+				Name:  contents[2],
+				Tribe: contents[3],
+			},
+			KilledBy: Resident{
+				Name:  contents[7],
+				Level: krl,
+			},
+		}
+		return message, nil
 	case regexps.Killed.MatchString(line):
 		var contents = regexps.Killed.FindAllStringSubmatch(line, 1)[0]
 		message, err := parseContent(line)
@@ -73,7 +93,7 @@ func NewMessageFromLine(line string) (*Message, error) {
 		}
 
 		kul, _ := strconv.Atoi(contents[3])
-		kel, _ := strconv.Atoi(contents[7])
+		krl, _ := strconv.Atoi(contents[7])
 
 		message.Event = MessageTypeKilled{
 			KilledUser: User{
@@ -81,9 +101,9 @@ func NewMessageFromLine(line string) (*Message, error) {
 				Level: kul,
 				Tribe: contents[4],
 			},
-			KilledBy: Enemy{
+			KilledBy: Resident{
 				Name:  contents[6],
-				Level: kel,
+				Level: krl,
 				Tribe: contents[8],
 			},
 		}

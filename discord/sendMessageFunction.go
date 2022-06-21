@@ -76,6 +76,19 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 			}
 
 			return nil
+		case ark.MessageTypeTamed:
+			if h.settings.SendOptions.Tamed.IsEnabled {
+				var message = discord_webhook.Message{
+					Content:   strings.TrimSpace(fmt.Sprintf("%s %s", h.settings.SendOptions.Tamed.Emoji, arklog.Content)),
+					ChannelID: h.settings.ChannelID,
+					UserName:  h.settings.UserName,
+					AvaterURL: h.settings.AvaterURI,
+				}
+
+				_, err := h.hook.Send(h.settings.ChannelID, message, false, nil)
+
+				return errors.Wrap(err, "Send")
+			}
 		case ark.MessageTypeKilled:
 			if h.settings.SendOptions.Killed.IsEnabled {
 				var message = discord_webhook.Message{

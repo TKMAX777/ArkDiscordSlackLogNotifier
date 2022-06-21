@@ -84,6 +84,20 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 			}
 
 			return nil
+		case ark.MessageTypeTamed:
+			if h.settings.SendOptions.Tamed.IsEnabled {
+				var message = slack_webhook.Message{
+					Text:     strings.TrimSpace(fmt.Sprintf("%s %s", h.settings.SendOptions.Tamed.Emoji, arklog.Content)),
+					Channel:  h.settings.ChannelID,
+					Username: h.settings.UserName,
+					IconURL:  h.settings.AvaterURI,
+					AsUser:   false,
+				}
+
+				_, err := h.hook.Send(message)
+
+				return errors.Wrap(err, "Send")
+			}
 		case ark.MessageTypeKilled:
 			if h.settings.SendOptions.Other.IsEnabled {
 				var message = slack_webhook.Message{

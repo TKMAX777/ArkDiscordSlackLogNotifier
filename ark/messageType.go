@@ -17,9 +17,14 @@ type MessageTypeLeave struct {
 	User User
 }
 
+type MessageTypeTamed struct {
+	User  User
+	Tamed Resident
+}
+
 type MessageTypeKilled struct {
 	KilledUser User
-	KilledBy   Enemy
+	KilledBy   Resident
 }
 
 type MessageTypeIlligalFormat struct{}

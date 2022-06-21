@@ -12,6 +12,7 @@ type Settings struct {
 type SendOptions struct {
 	JoinAndLeftState SendOption
 	JoinAndLeft      SendOption
+	Tamed            SendOption
 	Killed           SendOption
 	Other            SendOption
 	All              SendOption

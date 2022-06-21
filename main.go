@@ -25,6 +25,10 @@ func main() {
 					Emoji:     os.Getenv("SLACK_JOIN_EMOJI"),
 					EmojiSub:  os.Getenv("SLACK_LEFT_EMOJI"),
 				},
+				Tamed: slack.SendOption{
+					IsEnabled: os.Getenv("SLACK_SEND_TAMED") == "yes",
+					Emoji:     os.Getenv("SLACK_TAMED_EMOJI"),
+				},
 				Killed: slack.SendOption{
 					IsEnabled: os.Getenv("SLACK_SEND_KILLED") == "yes",
 					Emoji:     os.Getenv("SLACK_KILLED_EMOJI"),
@@ -53,6 +57,10 @@ func main() {
 					IsEnabled: os.Getenv("DISCORD_SEND_JOIN_AND_LEFT") == "yes",
 					Emoji:     os.Getenv("DISCORD_JOIN_EMOJI"),
 					EmojiSub:  os.Getenv("DISCORD_LEFT_EMOJI"),
+				},
+				Tamed: discord.SendOption{
+					IsEnabled: os.Getenv("DISCORD_SEND_TAMED") == "yes",
+					Emoji:     os.Getenv("DISCORD_TAMED_EMOJI"),
 				},
 				Killed: discord.SendOption{
 					IsEnabled: os.Getenv("DISCORD_SEND_KILLED") == "yes",
