@@ -11,14 +11,10 @@ import (
 )
 
 func (h *Handler) SendMessageFunction() message_sender.MessageSender {
-	var onlineNumber int
-
 	return message_sender.MessageSender(func(arklog ark.Message) error {
 
 		switch al := arklog.Content.(type) {
 		case ark.MessageTypeJoin:
-			onlineNumber += 1
-
 			h.joinState.Join(al.UserName)
 
 			// if h.settings.SendOptions.JoinAndLeftState {
@@ -28,11 +24,11 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 			if h.settings.SendOptions.All.IsEnabled || h.settings.SendOptions.JoinAndLeft.IsEnabled {
 				var text string
 				switch {
-				case onlineNumber > 1:
-					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, onlineNumber)
-				case onlineNumber == 1:
-					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, onlineNumber)
-				case onlineNumber <= 0:
+				case len(h.joinState.State) > 1:
+					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, len(h.joinState.State))
+				case len(h.joinState.State) == 1:
+					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content, len(h.joinState.State))
+				case len(h.joinState.State) <= 0:
 					text = fmt.Sprintf("%s %s\nOnline: no players", h.settings.SendOptions.JoinAndLeft.Emoji, al.Content)
 				}
 
@@ -50,8 +46,6 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 
 			return nil
 		case ark.MessageTypeLeave:
-			onlineNumber -= 1
-
 			h.joinState.Leave(al.UserName)
 
 			// if h.settings.SendOptions.JoinAndLeftState {
@@ -61,11 +55,11 @@ func (h *Handler) SendMessageFunction() message_sender.MessageSender {
 			if h.settings.SendOptions.All.IsEnabled || h.settings.SendOptions.JoinAndLeft.IsEnabled {
 				var text string
 				switch {
-				case onlineNumber > 1:
-					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeft.EmojiSub, al.Content, onlineNumber)
-				case onlineNumber == 1:
-					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeft.EmojiSub, al.Content, onlineNumber)
-				case onlineNumber <= 0:
+				case len(h.joinState.State) > 1:
+					text = fmt.Sprintf("%s %s\nOnline: %d players", h.settings.SendOptions.JoinAndLeft.EmojiSub, al.Content, len(h.joinState.State))
+				case len(h.joinState.State) == 1:
+					text = fmt.Sprintf("%s %s\nOnline: %d player", h.settings.SendOptions.JoinAndLeft.EmojiSub, al.Content, len(h.joinState.State))
+				case len(h.joinState.State) <= 0:
 					text = fmt.Sprintf("%s %s\nOnline: no players", h.settings.SendOptions.JoinAndLeft.EmojiSub, al.Content)
 				}
 
