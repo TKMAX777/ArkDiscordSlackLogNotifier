@@ -2,6 +2,7 @@ package ark
 
 import (
 	"log"
+	"path/filepath"
 	"strings"
 
 	"github.com/fsnotify/fsnotify"
@@ -21,7 +22,9 @@ func (h *Handler) dirWatch(messageChan chan Message) {
 				continue
 			}
 
-			if !strings.Contains(event.Name, "ServerGame.") && !strings.HasSuffix(event.Name, ".log") {
+			var filename = filepath.Base(event.Name)
+
+			if !strings.HasPrefix(filename, "ServerGame.") || !strings.HasSuffix(filename, ".log") {
 				continue
 			}
 
@@ -29,6 +32,7 @@ func (h *Handler) dirWatch(messageChan chan Message) {
 			h.currentLogPath = event.Name
 			h.watcher.Add(h.currentLogPath)
 
+			log.Println("FindNewLog: ", h.currentLogPath)
 		case err, ok := <-h.dirWatcher.Errors:
 			if !ok {
 				close(messageChan)
