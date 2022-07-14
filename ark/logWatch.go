@@ -6,7 +6,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
-func (h Handler) logWatch(messageChan chan Message) {
+func (h *Handler) logWatch(messageChan chan Message) {
 	for {
 		select {
 		case event, ok := <-h.watcher.Events:
