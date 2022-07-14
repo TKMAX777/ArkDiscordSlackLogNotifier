@@ -16,10 +16,10 @@ var regexps = struct {
 	Killed   *regexp.Regexp
 	Other    *regexp.Regexp
 }{
-	JoinLeft: regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\]\d+\.\d+\.\d+_\d+\.\d+\.\d+:\s(\S+)\s(joined|left)\sthis\sARK`),
-	Tamed:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\].*: (\S+) of Tribe (.*) Tamed (a|an) (.+) - Lvl (\d+) \((.+)\)!`),
-	Killed:   regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\].*: (\S+) - Lvl (\d+) \((.*)\) was killed by (a|an) (.+) - Lvl (\d+) \((.*)\)`),
-	Other:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\d+\](.*:\s*)?(.*)`),
+	JoinLeft: regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\s*\d+\]\d+\.\d+\.\d+_\d+\.\d+\.\d+:\s(\S+)\s(joined|left)\sthis\sARK`),
+	Tamed:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\s*\d+\].*: (\S+) of Tribe (.*) Tamed (a|an) (.+) - Lvl (\d+) \((.+)\)!`),
+	Killed:   regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\s*\d+\].*: (\S+) - Lvl (\d+) \((.*)\) was killed by (a|an) (.+) - Lvl (\d+) \((.*)\)`),
+	Other:    regexp.MustCompile(`\[(\d+\.\d+\.\d+-\d+\.\d+\.\d+):\d+\]\[\s*\d+\](.*:\s*)?(.*)`),
 }
 
 func NewMessageFromLine(line string) (*Message, error) {
