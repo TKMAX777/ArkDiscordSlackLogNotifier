@@ -74,12 +74,12 @@ func NewMessageFromLine(line string) (*Message, error) {
 
 		krl, _ := strconv.Atoi(contents[5])
 
-		message.Event = MessageTypeKilled{
-			KilledUser: User{
+		message.Event = MessageTypeTamed{
+			User: User{
 				Name:  contents[2],
 				Tribe: contents[3],
 			},
-			KilledBy: Resident{
+			Tamed: Resident{
 				Name:  contents[7],
 				Level: krl,
 			},
