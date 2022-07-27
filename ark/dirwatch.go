@@ -33,6 +33,21 @@ func (h *Handler) dirWatch(messageChan chan Message) {
 			h.watcher.Add(h.currentLogPath)
 
 			log.Println("FindNewLog: ", h.currentLogPath)
+
+			// Read found log's first line
+			line, err := h.readNewLine(h.currentLogPath)
+			if err != nil {
+				log.Printf("ReadLineError: %s\n", err.Error())
+				continue
+			}
+
+			message, err := NewMessageFromLine(line)
+			if err != nil && err != illigalFormatError {
+				log.Printf("NewMessageFromLine: %s\n", err.Error())
+				continue
+			}
+
+			messageChan <- *message
 		case err, ok := <-h.dirWatcher.Errors:
 			if !ok {
 				close(messageChan)
